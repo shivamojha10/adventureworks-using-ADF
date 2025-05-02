@@ -1,0 +1,5 @@
+No codes here (ain't sharing my personal info lol) but a general gist of how many Linked Services are req here:
+
+1. ADFtoSnowflakeSink
+2. blobSink
+3. s3Source
