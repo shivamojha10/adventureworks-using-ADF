@@ -1,0 +1,890 @@
+{
+    "name": "ADFtoSnowflake",
+    "properties": {
+        "activities": [
+            {
+                "name": "dim_customers",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "SnowflakeV2Sink",
+                        "importSettings": {
+                            "type": "SnowflakeImportCopyCommand"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "CustomerKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CUSTOMERKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "CustomerID",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CUSTOMER_ID",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Customer",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CUSTOMER",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "City",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CITY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "StateProvince",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "STATE_PROVINCE",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "CountryRegion",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "COUNTRY_REGION",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "PostalCode",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "POSTAL_CODE",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "dimCustomerData",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "dimCustomers",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "dim_dates",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "SnowflakeV2Sink",
+                        "importSettings": {
+                            "type": "SnowflakeImportCopyCommand"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "DateKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "DATEKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Date",
+                                    "type": "DateTime"
+                                },
+                                "sink": {
+                                    "name": "DATE",
+                                    "type": "DateTime"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "FiscalYear",
+                                    "type": "Int32"
+                                },
+                                "sink": {
+                                    "name": "FISCAL_YEAR",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "FiscalQuarter",
+                                    "type": "Int32"
+                                },
+                                "sink": {
+                                    "name": "FISCAL_QUARTER",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Month",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "MONTH",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "MonthKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "MONTHKEY",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "dimDateData",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "dimDates",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "dim_products",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "SnowflakeV2Sink",
+                        "importSettings": {
+                            "type": "SnowflakeImportCopyCommand"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "ProductKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "PRODUCTKEY",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "SKU",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SKU",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Product",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "PRODUCT",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "StandardCost",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "STANDARDCOST",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Color",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "COLOR",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ListPrice",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "LISTPRICE",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Model",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "MODEL",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Subcategory",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SUBCATEGORY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Category",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CATEGORY",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "dimProductData",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "dimProducts",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "dim_resellers",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "SnowflakeV2Sink",
+                        "importSettings": {
+                            "type": "SnowflakeImportCopyCommand"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "ResellerKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "RESELLERKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ResellerID",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "RESELLER_ID",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "BusinessType",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "BUSINESS_TYPE",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Reseller",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "RESELLER",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "City",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CITY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "StateProvince",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "STATE_PROVINCE",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "CountryRegion",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "COUNTRY_REGION",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "PostalCode",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "POSTAL_CODE",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "dimResellerData",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "dimResellers",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "dim_sales_territory",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "SnowflakeV2Sink",
+                        "importSettings": {
+                            "type": "SnowflakeImportCopyCommand"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "SalesTerritoryKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SALESTERRITORYKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Region",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "REGION",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Country",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "COUNTRY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Group",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "GROUP_NAME",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "dimSalesTerritory",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "dimSalesTerritoryData",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "dim_sales_order",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "SnowflakeV2Sink",
+                        "importSettings": {
+                            "type": "SnowflakeImportCopyCommand"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "Channel",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CHANNEL",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "SalesOrderLineKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SALESORDERLINKEKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "SalesOrder",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SALES_ORDER",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "SalesOrderLine",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SALES_ORDER_LINE",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "dimSalesOrderData",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "dimSalesOrder",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "factsales",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "SnowflakeV2Sink",
+                        "importSettings": {
+                            "type": "SnowflakeImportCopyCommand"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "SalesOrderLineKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SALESORDERLINEKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ResellerKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "RESELLERKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "CustomerKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "CUSTOMERKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ProductKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "PRODUCTKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "OrderDateKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "ORDERDATEKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "DueDateKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "DUEDATEKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ShipDateKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SHIPDATEKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "SalesTerritoryKey",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "SALESTERRITORYKEY",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "OrderQuantity",
+                                    "type": "Int32"
+                                },
+                                "sink": {
+                                    "name": "ORDER_QUANTITY",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "UnitPrice",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "UNIT_PRICE",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ExtendedAmount",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "EXTENDED_AMOUNT",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "UnitPriceDiscountPct",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "UNIT_DISCOUNT_PC",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ProductStandardCost",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "PRODUCT_STANDARD_COST",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "TotalProductCost",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "TOTAL_PRODUCT_COST",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "SalesAmount",
+                                    "type": "Single"
+                                },
+                                "sink": {
+                                    "name": "SALES_AMOUNT",
+                                    "type": "Double"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "fctSalesData",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "fctSales",
+                        "type": "DatasetReference"
+                    }
+                ]
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-04-23T11:25:59Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
